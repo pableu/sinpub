@@ -13,6 +13,7 @@ class Post < ActiveRecord::Base
 end
 
 get '/' do
+	@posts = Post.all
 	erb :index
 end
 
@@ -21,11 +22,16 @@ get '/new' do
 end
 
 post '/new' do
-	puts params.inspect
 	post = Post.new
 	post.name = params[:post][:title]
 	post.body = params[:post][:content]
 	post.save
+	redirect '/'
+end
+
+get '/posts/:id' do 
+	@post = Post.find(params[:id])
+	erb :post
 end
 
 get '/:name' do
